@@ -4,9 +4,11 @@
     <router-link to="/about">About</router-link>
   </nav>
   <router-view/>
+  <button class="button is-primary">Primary button</button>
 </template>
 
 <style lang="scss">
+@import '../node_modules/bulma';
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
