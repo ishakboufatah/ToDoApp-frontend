@@ -139,7 +139,7 @@ export default {
         url: 'http://127.0.0.1:8000/tasks/',
         auth: {
           username: 'admin',
-          password: 'safi31opmlm'
+          password: 'adminadmin'
         }
       }).then(response => this.tasks = response.data)
     },
@@ -154,7 +154,7 @@ export default {
           },
           auth: {
           username: 'admin',
-          password: 'safi31opmlm'
+          password: 'adminadmin'
         }
         }).then((response) => {
           let newTask ={
@@ -187,7 +187,7 @@ export default {
             },
           auth: {
           username: 'admin',
-          password: 'safi31opmlm'
+          password: 'adminadmin'
         }
         }).then(() => {
           this.description = ''
@@ -219,7 +219,7 @@ export default {
         },
         auth: {
           username: 'admin',
-          password: 'safi31opmlm'
+          password: 'adminadmin'
         }
 
       }).then(() => {
