@@ -6,7 +6,7 @@
     
   
     <div class="columns">
-      <div class="column is-3 is-offset-4">
+      <div class="column is-3 is-offset-2">
         <form class="box" v-on:submit.prevent="addTask">
           <h2 class="subtitle">Add task</h2>
 
@@ -14,7 +14,7 @@
           <div class="field">
             <label class="label">Description</label>
             <div class="control">
-              <input class="input" type="text" v-model="description"> 
+              <input class="input" type="text" v-model="description1"> 
             </div> 
           </div>
 
@@ -22,7 +22,7 @@
             <lable class="lable">Status</lable>
             <div class="control">
               <div class="select">
-                <select v-model="status" >
+                <select v-model="status1" >
                   <option value="todo">To Do</option>
                   <option value="done">Done</option>
                 </select>
@@ -37,7 +37,46 @@
           </div>
         </form>
       </div>
+
+      <div class="column is-3 is-offset-2">
+        <form class="box" >
+          <h2 class="subtitle">Update task</h2>
+
+          <div class="field">
+            <lable class="lable">Task</lable>
+            <div class="control">
+              <div class="select">
+                <select v-model="id" >
+                  <option v-for="task1 in atasks"  v-bind:key="task1.id" :value="task1.id">  {{ task1.description }}</option>
+                  
+                </select>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="field">
+            <label class="label">New Description</label>
+            <div class="control">
+              <input class="input" type="text" v-model="description"> 
+            </div> 
+          </div>
+
+          
+          
+
+          <div class="field">
+            <div class="buttons">
+              <button class="button is-link" @click="updateTask()">Update</button>
+              <button class="button is-danger" @click="deleteTask(id)">Delate</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
+
+
+
    
     <div class="columns">
       <div class="column is-6">
@@ -85,7 +124,8 @@ export default {
     return { 
       tasks : [],
       description: '',
-      status: 'todo'
+      description1: '',
+      status1: 'todo'
   }
  
   },
@@ -104,13 +144,13 @@ export default {
       }).then(response => this.tasks = response.data)
     },
     addTask() {
-      if (this.description) {
+      if (this.description1) {
         axios({
           method: 'post',
           url: 'http://127.0.0.1:8000/tasks/',
           data: {
-            description: this.description,
-            status: this.status
+            description: this.description1,
+            status: this.status1
           },
           auth: {
           username: 'admin',
@@ -119,17 +159,48 @@ export default {
         }).then((response) => {
           let newTask ={
             'id': response.data.id,
-            'description': this.description,
-            'status': this.status
+            'description': this.description1,
+            'status': this.status1
           }
           this.tasks.push(newTask)
 
-          this.description =''
-          this.status = 'todo'
+          this.description1 = ''
+          this.status1 = 'todo'
         }).catch((error) => {
           console.log(error)
         })
       }
+
+    },
+    updateTask() {
+      if (this.id) {   
+
+          axios({
+          method: 'put',
+          url: 'http://127.0.0.1:8000/tasks/'+ this.id + '/',
+          headers: {
+          'Content-Type': 'application/json',
+        },
+          data: {
+            status: 'todo',
+            description: this.description,
+            },
+          auth: {
+          username: 'admin',
+          password: 'safi31opmlm'
+        }
+        }).then(() => {
+          this.description = ''
+          this.id = ''
+          //this.getTasks()
+          
+
+        })
+      }
+
+    },
+    deleteTask(task_id){
+      axios.delete('http://127.0.0.1:8000/tasks/'+ task_id + '/')
 
     },
     setStatus(task_id, status) {
@@ -164,7 +235,10 @@ export default {
   },
   donetasks: function () {
     return this.tasks.filter(i => i.status === 'done')
-  }
+  },
+  atasks: function () {
+    return this.tasks.filter(i => i)
+  },
 } 
 }
 </script>
